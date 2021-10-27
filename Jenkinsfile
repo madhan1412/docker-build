@@ -6,7 +6,7 @@ pipeline {
 
             script {
                 def dockerfile = 'Dockerfile'
-                def customImage = docker.build('10.20.111.23:8081/docker-virtual/hello-world:latest', "-f ${dockerfile} .")
+                def customImage = docker.build('http://ec2-18-180-155-162.ap-northeast-1.compute.amazonaws.com:8081/docker-virtual/hello-world:latest', "-f ${dockerfile} .")
 
             }
         }
@@ -15,8 +15,8 @@ pipeline {
       stage ('Push image to Artifactory') { // take that image and push to artifactory
         steps {
             rtDockerPush(
-                serverId: "jFrog-ar1",
-                image: "10.20.111.23:8081/docker-virtual/hello-world:latest",
+                serverId: "artifactory-server",
+                image: "http://ec2-18-180-155-162.ap-northeast-1.compute.amazonaws.com:8081/docker-virtual/hello-world:latest",
                 host: 'tcp://localhost:2375',
                 targetRepo: 'local-repo', // where to copy to (from docker-virtual)
                 // Attach custom properties to the published artifacts:
